@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import './styles/theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-[#090D16] dark:text-slate-100 font-sans antialiased transition-colors duration-200;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Fully rounded / pill-shaped primary button with coral accent */
+  .btn-primary {
+    @apply bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-semibold 
+           py-2.5 px-6 rounded-full transition-all duration-200 shadow-sm hover:shadow-md 
+           focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 dark:focus:ring-offset-slate-900
+           disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  /* Pill-shaped secondary button */
+  .btn-secondary {
+    @apply bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 
+           font-semibold py-2.5 px-5 rounded-full border border-slate-200 dark:border-slate-700 
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600 
+           disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  /* Pill-shaped danger button */
+  .btn-danger {
+    @apply bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-900/60 dark:text-red-400 
+           font-semibold py-2 px-4 rounded-full border border-red-200 dark:border-red-900/50 
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 disabled:opacity-50 
+           disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-1.5;
+  }
+
+  /* Input fields: clean background with smooth focus border */
+  .input-field {
+    @apply w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 
+           placeholder-slate-400 dark:placeholder-slate-500 rounded-xl px-4 py-2.5 focus:outline-none 
+           focus:ring-2 focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)] transition-all duration-200 shadow-sm;
+  }
+
+  /* Clean card with subtle border and soft shadow */
+  .card {
+    @apply bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm 
+           hover:shadow-md transition-all duration-200;
+  }
+
+  /* Badges */
+  .badge-admin {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
+           bg-[var(--color-accent-light)] text-[var(--color-accent)] border border-[var(--color-accent-border)];
+  }
+
+  .badge-member {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
+           bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700;
+  }
+}

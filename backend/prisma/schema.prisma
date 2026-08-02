@@ -1,0 +1,126 @@
+// Prisma schema for SyncSpace (SaaS Team Collaboration Tool)
+// Phase 1 + Phase 2 + Phase 3 + Phase 4 (Auth, Orgs, RBAC, Boards, Lists, Cards, ActivityLog, Stripe Billing)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  hashedPassword String
+  createdAt      DateTime        @default(now())
+
+  orgs           OrgMember[]
+  pendingInvites PendingInvite[]
+  createdBoards  Board[]
+  assignedCards  Card[]          @relation("CardAssignee")
+  activities     ActivityLog[]
+}
+
+model Organization {
+  id                   String        @id @default(cuid())
+  name                 String
+  tier                 Tier          @default(FREE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   String?
+  createdAt            DateTime      @default(now())
+
+  members              OrgMember[]
+  pendingInvites       PendingInvite[]
+  boards               Board[]
+  activities           ActivityLog[]
+}
+
+model OrgMember {
+  id             String       @id @default(cuid())
+  userId         String
+  organizationId String
+  role           Role         @default(MEMBER)
+  joinedAt       DateTime     @default(now())
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+}
+
+model PendingInvite {
+  id             String       @id @default(cuid())
+  email          String
+  organizationId String
+  token          String       @unique @default(cuid())
+  createdAt      DateTime     @default(now())
+  invitedById    String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy      User?        @relation(fields: [invitedById], references: [id])
+}
+
+model Board {
+  id             String        @id @default(cuid())
+  name           String
+  organizationId String
+  createdById    String
+  createdAt      DateTime      @default(now())
+
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User          @relation(fields: [createdById], references: [id])
+  lists          List[]
+  activities     ActivityLog[]
+}
+
+model List {
+  id        String   @id @default(cuid())
+  name      String
+  boardId   String
+  position  Float    @default(65535.0)
+  createdAt DateTime @default(now())
+
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
+}
+
+model Card {
+  id          String    @id @default(cuid())
+  title       String
+  description String?   @db.Text
+  listId      String
+  position    Float     @default(65535.0)
+  assigneeId  String?
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  list        List      @relation(fields: [listId], references: [id], onDelete: Cascade)
+  assignee    User?     @relation("CardAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+}
+
+model ActivityLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  boardId        String?
+  userId         String
+  action         String       @db.Text
+  createdAt      DateTime     @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  board          Board?       @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum Tier {
+  FREE
+  PRO
+}

@@ -1,0 +1,82 @@
+/* Custom CSS stylesheet for theme variables and custom UI styles */
+
+:root {
+  --color-accent: #FF5A5F;
+  --color-accent-hover: #E04347;
+  --color-accent-light: #FFF1F1;
+  --color-accent-border: #FFCDCE;
+  --color-bg-body: #FAFAFB;
+  --color-bg-card: #FFFFFF;
+  --color-text-main: #111827;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+}
+
+html.dark {
+  --color-accent: #FF5A5F;
+  --color-accent-hover: #FF7579;
+  --color-accent-light: rgba(255, 90, 95, 0.15);
+  --color-accent-border: rgba(255, 90, 95, 0.3);
+  --color-bg-body: #090D16;
+  --color-bg-card: #111827;
+  --color-text-main: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-border: #1F2937;
+}
+
+/* Custom smooth hover transitions and animations */
+.btn-pill-accent {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 10px rgba(255, 90, 95, 0.25);
+}
+
+.btn-pill-accent:hover {
+  background-color: var(--color-accent-hover);
+  box-shadow: 0 4px 16px rgba(255, 90, 95, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-pill-accent:active {
+  transform: translateY(0);
+}
+
+.btn-pill-secondary {
+  background-color: #F3F4F6;
+  color: #374151;
+  border: 1px solid #E5E7EB;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark .btn-pill-secondary {
+  background-color: #1F2937;
+  color: #E5E7EB;
+  border-color: #374151;
+}
+
+.btn-pill-secondary:hover {
+  background-color: #E5E7EB;
+  color: #111827;
+  border-color: #D1D5DB;
+}
+
+html.dark .btn-pill-secondary:hover {
+  background-color: #374151;
+  color: #FFFFFF;
+  border-color: #4B5563;
+}
+
+.card-hover-effect {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-accent-border);
+}
