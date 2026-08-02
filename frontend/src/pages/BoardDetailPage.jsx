@@ -267,10 +267,13 @@ export default function BoardDetailPage() {
   const handleAddList = async (name) => {
     try {
       const data = await client.post(`/api/orgs/${orgId}/boards/${boardId}/lists`, { name });
-      setBoard((prev) => ({
-        ...prev,
-        lists: [...prev.lists, { ...data.list, cards: [] }],
-      }));
+      setBoard((prev) => {
+        if (prev.lists.some((l) => l.id === data.list.id)) return prev;
+        return {
+          ...prev,
+          lists: [...prev.lists, { ...data.list, cards: [] }],
+        };
+      });
     } catch (err) {
       alert(err.message || 'Failed to create list.');
     }
@@ -305,9 +308,13 @@ export default function BoardDetailPage() {
       const data = await client.post(`/api/orgs/${orgId}/lists/${listId}/cards`, { title });
       setBoard((prev) => ({
         ...prev,
-        lists: prev.lists.map((l) =>
-          l.id === listId ? { ...l, cards: [...l.cards, data.card] } : l
-        ),
+        lists: prev.lists.map((l) => {
+          if (l.id === listId) {
+            if (l.cards.some((c) => c.id === data.card.id)) return l;
+            return { ...l, cards: [...l.cards, data.card] };
+          }
+          return l;
+        }),
       }));
     } catch (err) {
       alert(err.message || 'Failed to create card.');
