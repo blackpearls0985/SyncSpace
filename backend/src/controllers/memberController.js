@@ -120,7 +120,7 @@ const inviteMember = async (req, res) => {
       });
 
       // In production this would be sent via email. For now, log to console.
-      const inviteLink = `http://localhost:5173/signup?invite=${invite.token}&email=${encodeURIComponent(normalizedEmail)}`;
+      const inviteLink = `${process.env.CLIENT_URL}/signup?invite=${invite.token}&email=${encodeURIComponent(normalizedEmail)}`;
       console.log(`\n📧 INVITE LINK (would be emailed in production):`);
       console.log(`   Email: ${normalizedEmail}`);
       console.log(`   Link:  ${inviteLink}\n`);

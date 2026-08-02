@@ -17,6 +17,7 @@ const webhookRoutes = require('./routes/webhooks');
 
 const app = express();
 const server = http.createServer(app);
+app.set('trust proxy', 1);
 
 // Initialize Socket.io server attached to HTTP server
 initSocket(server);
