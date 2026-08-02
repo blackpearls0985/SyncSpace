@@ -20,10 +20,9 @@ const client = axios.create({
 client.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    const message =
-      error.response?.data?.error ||
-      error.message ||
-      'An unexpected error occurred.';
+    const message = !error.response
+      ? '⚠️ Trouble connecting? Some mobile carriers block this connection. Please try switching to Wi-Fi.'
+      : error.response?.data?.error || error.message || 'An unexpected error occurred.';
     return Promise.reject(new Error(message));
   }
 );
